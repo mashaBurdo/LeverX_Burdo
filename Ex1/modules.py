@@ -54,7 +54,11 @@ class UploadXml:
         doc.appendChild(root)
 
         for room in self.rooms_students:
-            room_el = doc.createElement('room'+str(*room.keys()))
+            room_el = doc.createElement('room')
+            room_number_el = doc.createElement('room_number')
+            text = doc.createTextNode('room # '+str(*room.keys()))
+            room_number_el.appendChild(text)
+            room_el.appendChild(room_number_el)
             students = list(room.values())[0]
 
             stud_count = 0
