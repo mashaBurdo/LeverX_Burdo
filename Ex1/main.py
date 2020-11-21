@@ -1,5 +1,7 @@
 import json
 import xml.etree.ElementTree as xml
+from xml.dom import minidom
+import sys
 
 
 class LoadJson:
@@ -62,11 +64,26 @@ class UploadXml:
         with open(filename, 'wb') as rooms_students_file:
             tree.write(rooms_students_file)
 
+    def create_file_minidom(self, filename):
+        doc = minidom.Document()
+        root = doc.createElement('root')
+        doc.appendChild(root)
+        room = doc.createElement('room')
+        text = doc.createTextNode('room information here')
+        room.appendChild(text)
+        root.appendChild(room)
+
+        xml_str = doc.toprettyxml(indent='    ')
+        with open(filename, 'w') as rooms_students_file:
+            rooms_students_file.write(xml_str)
+
+
+
 
 rooms = LoadJson('rooms.json').loadfile()
 students = LoadJson('students.json').loadfile()
 
 rooms_students = RoomsForStudents(rooms, students).create_list()
 
-UploadJson(rooms_students).create_file('rooms_students.json')
-UploadXml(rooms_students).create_file('rooms_students.xml')
+#UploadJson(rooms_students).create_file('rooms_students.json')
+UploadXml(rooms_students).create_file_minidom('rooms_students.xml')
