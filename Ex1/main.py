@@ -1,5 +1,4 @@
 import json
-import xml.etree.ElementTree as xml
 from xml.dom import minidom
 import sys
 
@@ -51,27 +50,21 @@ class UploadXml:
         self.rooms_students = rooms_students
 
     def create_file(self, filename):
-        root_el = xml.Element('root')
-
-        for room in self.rooms_students:
-            room_el = xml.SubElement(root_el, 'room '+str(*room.keys()))
-            students = list(room.values())[0]
-            for student in students:
-                student_el = xml.SubElement(room_el, 'student')
-                student_el.text = student
-
-        tree = xml.ElementTree(root_el)
-        with open(filename, 'wb') as rooms_students_file:
-            tree.write(rooms_students_file)
-
-    def create_file_minidom(self, filename):
         doc = minidom.Document()
         root = doc.createElement('root')
         doc.appendChild(root)
-        room = doc.createElement('room')
-        text = doc.createTextNode('room information here')
-        room.appendChild(text)
-        root.appendChild(room)
+
+        for room in self.rooms_students:
+            room_el = doc.createElement('room'+str(*room.keys()))
+            students = list(room.values())[0]
+
+            for student in students:
+                student_el = doc.createElement('student')
+                text = doc.createTextNode(student)
+                student_el.appendChild(text)
+                room_el.appendChild(student_el)
+
+            root.appendChild(room_el)
 
         xml_str = doc.toprettyxml(indent='    ')
         with open(filename, 'w') as rooms_students_file:
@@ -79,11 +72,12 @@ class UploadXml:
 
 
 
-
+'''
 rooms = LoadJson('rooms.json').loadfile()
 students = LoadJson('students.json').loadfile()
 
 rooms_students = RoomsForStudents(rooms, students).create_list()
 
-#UploadJson(rooms_students).create_file('rooms_students.json')
-UploadXml(rooms_students).create_file_minidom('rooms_students.xml')
+UploadJson(rooms_students).create_file('rooms_students.json')
+UploadXml(rooms_students).create_file('rooms_students.xml')
+'''
