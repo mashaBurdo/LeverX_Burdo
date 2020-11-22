@@ -1,25 +1,23 @@
-#Найти и исправить ошибку (смотри вложенный файл), оставив многопоточность.
-from threading import Thread
+from threading import Thread, Lock
 
 a = 0
-
-
+lock = Lock()
 def function(arg):
     global a
     for _ in range(arg):
+        lock.acquire()
         a += 1
-
+        lock.release()
 
 def main():
     threads = []
     for i in range(5):
         thread = Thread(target=function, args=(1000000,))
         thread.start()
-        print(thread)
         threads.append(thread)
 
     [t.join() for t in threads]
-    print("----------------------", a)  # ???
 
+    print("----------------------", a)  
 
 main()
