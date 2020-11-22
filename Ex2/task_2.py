@@ -71,4 +71,10 @@ True
 False
 >>> Version('1.3.42') >= Version('00042.3.1')
 False
+>>> Version('1.0.0-rc.1') > Version('1.0') 
+True
+>>> Version('1.0.0-rc.1') == Version('1.0') 
+False
+>>> Version('000000000000000001.0') == Version('1.0') 
+True
 '''
