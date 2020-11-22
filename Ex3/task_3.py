@@ -1,3 +1,4 @@
+# Race condition is fixed
 from threading import Thread, Lock
 
 a = 0
