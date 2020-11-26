@@ -24,12 +24,10 @@ class RoomsForStudents:
         rooms_students = []
         for room in self.rooms:
             room_student = {room['id']: []}
-            for student in self.students:
-                if student['room'] == room['id']:
-                    room_student[room['id']].append(student['name'])
             rooms_students.append(room_student)
+        for student in self.students:
+            rooms_students[student['room']][student['room']].append(student['name'])
         return rooms_students
-
 
 class Upload:
     '''Class for json file uploading'''
@@ -37,21 +35,17 @@ class Upload:
     def __init__(self, rooms_students):
         self.rooms_students = rooms_students
 
+
 class UploadJson(Upload):
     '''Class for json file uploading'''
-
-    def __init__(self, rooms_students):
-        self.rooms_students = rooms_students
 
     def create_json(self, filename):
         with open(filename, 'w') as rooms_students_file:
             json.dump(self.rooms_students, rooms_students_file, indent=4, sort_keys=True)
 
+
 class UploadXml(Upload):
     '''Class for xml file uploading'''
-
-    def __init__(self, rooms_students):
-        self.rooms_students = rooms_students
 
     def create_xml(self, filename):
         doc = minidom.Document()
