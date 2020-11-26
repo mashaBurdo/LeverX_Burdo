@@ -13,7 +13,7 @@ class LoadJson:
             return json.load(readfile)
 
 
-class RoomsForStudents:
+class ProcessRooms:
     '''Class for creating a list of rooms where each room contains a list of students who are in this room'''
 
     def __init__(self, rooms, students):

@@ -1,4 +1,4 @@
-from modules import LoadJson, RoomsForStudents, UploadJson, UploadXml
+from modules import LoadJson, ProcessRooms, UploadJson, UploadXml
 import sys
 import argparse
 import os.path
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     students = LoadJson(namespace.students).loadfile()
     rooms = LoadJson(namespace.rooms).loadfile()
 
-    rooms_students = RoomsForStudents(rooms, students).create_list()
+    rooms_students = ProcessRooms(rooms, students).create_list()
 
     if namespace.format == 'json':
         UploadJson(rooms_students).create_json('rooms_students.json')
