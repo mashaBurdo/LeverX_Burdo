@@ -29,8 +29,9 @@ class ProcessRooms:
             rooms_students[student['room']][student['room']].append(student['name'])
         return rooms_students
 
+
 class Upload:
-    '''Class for json file uploading'''
+    '''Class for file uploading'''
 
     def __init__(self, rooms_students):
         self.rooms_students = rooms_students
