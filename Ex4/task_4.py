@@ -1,6 +1,7 @@
 import json
+import pymysql
+from pymysql.cursors import DictCursor
 from xml.dom import minidom
-
 
 class LoadJson:
     '''Class for json files loading'''
@@ -11,3 +12,23 @@ class LoadJson:
     def loadfile(self):
         with open(self.filename, 'r') as readfile:
             return json.load(readfile)
+
+#rooms = LoadJson('rooms.json').loadfile()
+#students = LoadJson('students.json').loadfile()
+#sprint(students)
+
+connection = pymysql.connect(
+    host='localhost', 
+    user='masha', 
+    password='SQfavorit007'
+)
+
+print('Connected')
+
+with connection.cursor() as cursor:
+
+    sql = 'CREATE DATABASE IF NOT EXISTS rooms_students'
+    cursor.execute(sql)
+
+
+connection.close()
