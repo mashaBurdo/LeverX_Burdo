@@ -31,24 +31,29 @@ class RoomsForStudents:
         return rooms_students
 
 
-class UploadJson:
+class Upload:
     '''Class for json file uploading'''
 
     def __init__(self, rooms_students):
         self.rooms_students = rooms_students
 
-    def create_file(self, filename):
+class UploadJson(Upload):
+    '''Class for json file uploading'''
+
+    def __init__(self, rooms_students):
+        self.rooms_students = rooms_students
+
+    def create_json(self, filename):
         with open(filename, 'w') as rooms_students_file:
             json.dump(self.rooms_students, rooms_students_file, indent=4, sort_keys=True)
 
-
-class UploadXml:
+class UploadXml(Upload):
     '''Class for xml file uploading'''
 
     def __init__(self, rooms_students):
         self.rooms_students = rooms_students
 
-    def create_file(self, filename):
+    def create_xml(self, filename):
         doc = minidom.Document()
         root = doc.createElement('root')
         doc.appendChild(root)

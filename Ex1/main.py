@@ -23,8 +23,6 @@ def create_parser():
     return parser
 
 
-
-
 if __name__ == "__main__":
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
@@ -35,9 +33,9 @@ if __name__ == "__main__":
     rooms_students = RoomsForStudents(rooms, students).create_list()
 
     if namespace.format == 'json':
-        UploadJson(rooms_students).create_file('rooms_students.json')
+        UploadJson(rooms_students).create_json('rooms_students.json')
     elif namespace.format == 'xml':
-        UploadXml(rooms_students).create_file('rooms_students.xml')
+        UploadXml(rooms_students).create_xml('rooms_students.xml')
 
 
 # Command example: python main.py -s students.json -r rooms.json -f json      
