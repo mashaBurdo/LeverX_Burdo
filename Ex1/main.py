@@ -30,16 +30,15 @@ def create_parser():
 if __name__ == "__main__":
     parser = create_parser()
     namespace = vars(parser.parse_args(sys.argv[1:]))
-    print(namespace['rooms'])
-
+    
     students = JsonLoader(namespace['students']).loadfile()
     rooms = JsonLoader(namespace['rooms']).loadfile()
 
     rooms_students = RoomsProcesser(rooms, students).create_list()
 
-    if namespace.format == 'json':
+    if namespace['format'] == 'json':
         JsonUploader(rooms_students).create_json('rooms_students.json')
-    elif namespace.format == 'xml':
+    elif namespace['format'] == 'xml':
         XmlUploader(rooms_students).create_xml('rooms_students.xml')
 
 
