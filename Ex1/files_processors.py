@@ -1,4 +1,3 @@
-from abc import ABCMeta, abstractmethod
 import json
 from xml.dom import minidom
 
@@ -31,25 +30,25 @@ class RoomsProcesser:
         return rooms_students
 
 
-class Upload:
-    '''Class for file uploading'''
+class FileUploader():
+    '''Base class for file uploading'''
 
     def __init__(self, rooms_students):
         self.rooms_students = rooms_students
 
 
-class JsonUploader(Upload):
+class JsonUploader(FileUploader):
     '''Class for json file uploading'''
 
-    def create_json(self, filename):
-        with open(filename, 'w') as rooms_students_file:
+    def create_file(self):
+        with open('rooms_students.json', 'w') as rooms_students_file:
             json.dump(self.rooms_students, rooms_students_file, indent=4, sort_keys=True)
 
 
-class XmlUploader(Upload):
+class XmlUploader(FileUploader):
     '''Class for xml file uploading'''
 
-    def create_xml(self, filename):
+    def create_file(self):
         doc = minidom.Document()
         root = doc.createElement('root')
         doc.appendChild(root)
@@ -73,5 +72,5 @@ class XmlUploader(Upload):
             root.appendChild(room_el)
 
         xml_str = doc.toprettyxml(indent='    ')
-        with open(filename, 'w') as rooms_students_file:
+        with open('rooms_students.xml', 'w') as rooms_students_file:
             rooms_students_file.write(xml_str)
