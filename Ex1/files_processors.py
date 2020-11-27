@@ -1,8 +1,9 @@
+from abc import ABCMeta, abstractmethod
 import json
 from xml.dom import minidom
 
 
-class LoadJson:
+class JsonLoader:
     '''Class for json files loading'''
 
     def __init__(self, filename):
@@ -13,7 +14,7 @@ class LoadJson:
             return json.load(readfile)
 
 
-class ProcessRooms:
+class RoomsProcesser:
     '''Class for creating a list of rooms where each room contains a list of students who are in this room'''
 
     def __init__(self, rooms, students):
@@ -37,7 +38,7 @@ class Upload:
         self.rooms_students = rooms_students
 
 
-class UploadJson(Upload):
+class JsonUploader(Upload):
     '''Class for json file uploading'''
 
     def create_json(self, filename):
@@ -45,7 +46,7 @@ class UploadJson(Upload):
             json.dump(self.rooms_students, rooms_students_file, indent=4, sort_keys=True)
 
 
-class UploadXml(Upload):
+class XmlUploader(Upload):
     '''Class for xml file uploading'''
 
     def create_xml(self, filename):

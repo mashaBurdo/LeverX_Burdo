@@ -3,7 +3,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 from xml.dom import minidom
 
-class LoadJson:
+class JsonLoader:
     '''Class for json files loading'''
 
     def __init__(self, filename):
@@ -13,8 +13,8 @@ class LoadJson:
         with open(self.filename, 'r') as readfile:
             return json.load(readfile)
 
-#rooms = LoadJson('rooms.json').loadfile()
-#students = LoadJson('students.json').loadfile()
+#rooms = JsonLoader('rooms.json').loadfile()
+#students = JsonLoader('students.json').loadfile()
 #sprint(students)
 
 connection = pymysql.connect(

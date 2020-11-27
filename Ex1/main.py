@@ -1,4 +1,4 @@
-from modules import LoadJson, ProcessRooms, UploadJson, UploadXml
+from files_processors import JsonLoader, RoomsProcesser, JsonUploader, XmlUploader
 import sys
 import argparse
 import os.path
@@ -29,17 +29,18 @@ def create_parser():
 
 if __name__ == "__main__":
     parser = create_parser()
-    namespace = parser.parse_args(sys.argv[1:])
+    namespace = vars(parser.parse_args(sys.argv[1:]))
+    print(namespace['rooms'])
 
-    students = LoadJson(namespace.students).loadfile()
-    rooms = LoadJson(namespace.rooms).loadfile()
+    students = JsonLoader(namespace['students']).loadfile()
+    rooms = JsonLoader(namespace['rooms']).loadfile()
 
-    rooms_students = ProcessRooms(rooms, students).create_list()
+    rooms_students = RoomsProcesser(rooms, students).create_list()
 
     if namespace.format == 'json':
-        UploadJson(rooms_students).create_json('rooms_students.json')
+        JsonUploader(rooms_students).create_json('rooms_students.json')
     elif namespace.format == 'xml':
-        UploadXml(rooms_students).create_xml('rooms_students.xml')
+        XmlUploader(rooms_students).create_xml('rooms_students.xml')
 
 
 # Command example: python main.py -s students.json -r rooms.json -f json
