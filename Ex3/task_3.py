@@ -4,7 +4,7 @@ import concurrent.futures
 
 
 class IncrementedVariable:
-    '''Class for variable incrementation'''
+    '''Class for locked variable incrementation'''
     def __init__(self):
         self.value = 0
         self._lock = Lock()
