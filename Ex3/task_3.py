@@ -1,24 +1,28 @@
 # Race condition is fixed
-from threading import Thread, Lock
+from threading import Lock
+import concurrent.futures
 
-a = 0
-lock = Lock()
-def function(arg):
-    global a
-    for _ in range(arg):
-        lock.acquire()
-        a += 1
-        lock.release()
+
+class IncrementedVariable:
+    '''Class for locked variable incrementation '''
+    def __init__(self):
+        self.value = 0
+        self._lock = Lock()
+
+    def locked_update(self, arg):
+        for _ in range(arg):
+            with self._lock:
+                self.value += 1
+
 
 def main():
-    threads = []
-    for i in range(5):
-        thread = Thread(target=function, args=(1000000,))
-        thread.start()
-        threads.append(thread)
+    variable = IncrementedVariable()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        threads = []
+        for i in range(5):
+            threads.append(executor.submit(variable.locked_update, arg=1000000))
 
-    [t.join() for t in threads]
+    print("----------------------", variable.value)
 
-    print("----------------------", a)  
 
 main()
