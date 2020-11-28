@@ -1,5 +1,5 @@
 class Version:
-    '''Class for lexicographical version comparison. Versions are represented as tuples. Leading zeros problem is solved.'''
+    '''Class for lexicographical version comparison. Versions are represented as tuples. Leading zeros problem is solved. '''
     def __init__(self, version):
         self.str_version = self.to_no_int_tuple(version)
         self.version = self.to_tuple(version)
