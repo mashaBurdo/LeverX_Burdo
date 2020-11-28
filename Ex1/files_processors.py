@@ -2,7 +2,7 @@ import json
 from xml.dom import minidom
 
 
-class LoadJson:
+class JsonLoader:
     '''Class for json files loading'''
 
     def __init__(self, filename):
@@ -13,7 +13,7 @@ class LoadJson:
             return json.load(readfile)
 
 
-class RoomsForStudents:
+class RoomsProcesser:
     '''Class for creating a list of rooms where each room contains a list of students who are in this room'''
 
     def __init__(self, rooms, students):
@@ -24,31 +24,31 @@ class RoomsForStudents:
         rooms_students = []
         for room in self.rooms:
             room_student = {room['id']: []}
-            for student in self.students:
-                if student['room'] == room['id']:
-                    room_student[room['id']].append(student['name'])
             rooms_students.append(room_student)
+        for student in self.students:
+            rooms_students[student['room']][student['room']].append(student['name'])
         return rooms_students
 
 
-class UploadJson:
-    '''Class for json file uploading'''
+class FileUploader():
+    '''Base class for file uploading'''
 
     def __init__(self, rooms_students):
         self.rooms_students = rooms_students
 
-    def create_file(self, filename):
-        with open(filename, 'w') as rooms_students_file:
+
+class JsonUploader(FileUploader):
+    '''Class for json file uploading'''
+
+    def create_file(self):
+        with open('rooms_students.json', 'w') as rooms_students_file:
             json.dump(self.rooms_students, rooms_students_file, indent=4, sort_keys=True)
 
 
-class UploadXml:
+class XmlUploader(FileUploader):
     '''Class for xml file uploading'''
 
-    def __init__(self, rooms_students):
-        self.rooms_students = rooms_students
-
-    def create_file(self, filename):
+    def create_file(self):
         doc = minidom.Document()
         root = doc.createElement('root')
         doc.appendChild(root)
@@ -72,5 +72,5 @@ class UploadXml:
             root.appendChild(room_el)
 
         xml_str = doc.toprettyxml(indent='    ')
-        with open(filename, 'w') as rooms_students_file:
+        with open('rooms_students.xml', 'w') as rooms_students_file:
             rooms_students_file.write(xml_str)
