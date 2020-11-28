@@ -66,7 +66,12 @@ def main():
     for version_1, version_2 in to_test:
 
         # print(Version(version_1).version, Version(version_2).version)
+<<<<<<< HEAD
         # print(f"{version_1} < {version_2}",Version(version_1) < Version(version_2))
+=======
+        # print(f"{version_1} and {version_2}", "<")
+        # print(Version(version_1) < Version(version_2))
+>>>>>>> b57a419 (ready for check)
         assert Version(version_1) < Version(version_2), "le failed"
         assert Version(version_2) > Version(version_1), "ge failed"
         assert Version(version_2) != Version(version_1), "neq failed"
@@ -87,6 +92,7 @@ True
 False
 >>> Version('1.3.42') >= Version('00042.3.1')
 False
+<<<<<<< HEAD
 >>> Version('1.0.0-rc.1') > Version('1.0')
 True
 >>> Version('1.0.0-rc.1') == Version('1.0')
@@ -97,4 +103,6 @@ True
 True
 >>> Version('1.0.0') !=  Version('1')
 False
+=======
+>>>>>>> b57a419 (ready for check)
 '''
