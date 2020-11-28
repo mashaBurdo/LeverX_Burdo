@@ -14,7 +14,7 @@ class JsonLoader:
 
 
 class RoomsProcesser:
-    '''Class for creating a list of rooms where each room contains a list of students who are in this room'''
+    '''Class for creating a list of rooms where each room contains a list of students who are in this room '''
 
     def __init__(self, rooms, students):
         self.rooms = rooms

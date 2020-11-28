@@ -39,4 +39,4 @@ if __name__ == "__main__":
     files_types[namespace['format']](rooms_students).create_file()
 
 
-# Command example: python main.py -s students.json -r rooms.json -f json
+# Command example: python main.py -s students.json -r rooms.json -f json 
