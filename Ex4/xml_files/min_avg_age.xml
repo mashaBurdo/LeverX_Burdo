@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<root>
+    <room>
+        <room_number>Room #661</room_number>
+    </room>
+    <room>
+        <room_number>Room #913</room_number>
+    </room>
+    <room>
+        <room_number>Room #111</room_number>
+    </room>
+    <room>
+        <room_number>Room #957</room_number>
+    </room>
+    <room>
+        <room_number>Room #773</room_number>
+    </room>
+</root>
