@@ -49,7 +49,7 @@ if __name__ == "__main__":
     namespace = vars(parser.parse_args(sys.argv[1:]))
     files_types = {'json': create_all_json_files, 'xml': create_all_xml_files}
 
-    connection = DbConnector("localhost", "masha", "SQfavorit007").create_connection()
+    connection = DbConnector("localhost", "masha", "").create_connection()
     get_in_db(connection)
 
     create_students_table = """
