@@ -2,7 +2,7 @@ from xml.dom import minidom
 import json
 import argparse
 import os.path
-
+import logging
 
 class Parser:
     '''Class for arguments parsing and validation'''
@@ -13,12 +13,12 @@ class Parser:
     def file_choice(self, extention, fname):
         ext = os.path.splitext(fname)[1][1:]
         if ext != extention:
-            self.parser.error("File extention not {}".format(extention))
+            logging.error("File extention not {}".format(extention), exc_info=True)
         return fname
 
     def extention_choice(self, ext):
         if ext != 'xml' and ext != 'json':
-            self.parser.error("File extention not xml or json")
+            logging.error("File extention not xml or json", exc_info=True)
         return ext
 
     def create_parser(self):
@@ -26,6 +26,9 @@ class Parser:
         parser.add_argument('-s', '--students', required=True, type=lambda s: self.file_choice(('json'), s))
         parser.add_argument('-r', '--rooms', required=True, type=lambda s: self.file_choice(('json'), s))
         parser.add_argument('-f', '--format', required=True, type=lambda s: self.extention_choice(s))
+        parser.add_argument('-hn', '--hostname', required=True)
+        parser.add_argument('-un', '--username', required=True)
+        parser.add_argument('-up', '--userpassword', required=True)
 
         return parser
 
@@ -53,7 +56,7 @@ class JsonUploader(FileUploader):
     '''Class for json file uploading'''
 
     def create_file(self):
-        with open(self.filename, 'w') as upload_file:
+        with open('json_files/' + self.filename + '.json', 'w') as upload_file:
             json.dump(self.data, upload_file, indent=4, sort_keys=True)
 
 
@@ -102,5 +105,5 @@ class XmlUploader(FileUploader):
             doc = self.create_doc_list()
 
         xml_str = doc.toprettyxml(indent='    ')
-        with open(self.filename, 'w') as rooms_students_file:
+        with open('xml_files/' + self.filename + '.xml', 'w') as rooms_students_file:
             rooms_students_file.write(xml_str)

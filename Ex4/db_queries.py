@@ -1,63 +1,51 @@
-import pymysql
+create_students_table = """
+    CREATE TABLE IF NOT EXISTS students (
+        birthday DATETIME,
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        room INTEGER,
+        sex TEXT
+    )ENGINE=InnoDB AUTO_INCREMENT=0
+    """
+create_rooms_table = """
+    CREATE TABLE IF NOT EXISTS rooms (
+        id INTEGER PRIMARY KEY,
+        room TEXT NOT NULL
+    )ENGINE=InnoDB AUTO_INCREMENT=0
+    """
+student_count_query = '''
+        SELECT rooms.room, COUNT(*)
+        FROM rooms, students
+        WHERE rooms.id = students.room
+        GROUP BY rooms.room
+        ORDER BY rooms.id
+    '''
+min_age_query = '''
+        SELECT rooms.room
+        FROM rooms, students
+        WHERE rooms.id = students.room
+        GROUP BY rooms.room
+        ORDER BY AVG(students.birthday) DESC
+        LIMIT 5
+    '''
+age_diffecrence_query = '''
+        SELECT rooms.room
+        FROM rooms, students
+        WHERE rooms.id = students.room
+        GROUP BY rooms.room
+        ORDER BY DATEDIFF(MAX(students.birthday),MIN(students.birthday)) DESC
+        LIMIT 5
+    '''
 
-
-class DbConnector:
-    '''Class for data base connection'''
-    def __init__(self, host_name, user_name, user_password):
-        self.host_name = host_name
-        self.user_name = user_name
-        self.user_password = user_password
-
-    def create_connection(self):
-        connection = None
-        try:
-            connection = pymysql.connect(
-                host=self.host_name,
-                user=self.user_name,
-                password=self.user_password
-            )
-        except pymysql.Error as e:
-            return ("Could not close connection error pymysql %d: %s" % (e.args[0], e.args[1]))
-
-        return connection
-
-
-class Executer():
-    '''Base class for query execution'''
-    def __init__(self, connection, query):
-        self.connection = connection
-        self.query = query
-
-
-class QueryExecuter(Executer):
-    '''Class for one query executiov'''
-    def execute_query(self):
-        with self.connection.cursor() as cursor:
-            try:
-                cursor.execute(self.query)
-                self.connection.commit()
-            except pymysql.Error as e:
-                print("The error %d occurred: %s" % (e.args[0], e.args[1]))
-
-
-class QueriesExecuter(Executer):
-    '''Class for many query executions'''
-    def execute_queries(self, val):
-        with self.connection.cursor() as cursor:
-            try:
-                cursor.executemany(self.query, val)
-                self.connection.commit()
-            except pymysql.Error as e:
-                print("The error %d occurred: %s" % (e.args[0], e.args[1]))
-
-
-class DataFetcher(Executer):
-    '''Class for data fetching'''
-    def fetch_data(self):
-        with self.connection.cursor() as cursor:
-            try:
-                cursor.execute(self.query)
-                data = cursor.fetchall()
-                return data
-            except pymysql.Error as e:
-                print("The error %d occurred: %s" % (e.args[0], e.args[1]))
+different_sex_query = '''
+        SELECT DISTINCT rooms.room
+        FROM  rooms
+        JOIN students ON rooms.id=students.room
+        GROUP BY rooms.id
+        HAVING COUNT(DISTINCT students.sex)=1
+        ORDER BY rooms.id
+    '''
+fetch_queries = [('rooms_student_count', student_count_query, True), 
+                ('top_5_rooms_min_avg_age', min_age_query, False),
+                ('top_5_rooms_max_age_diff', age_diffecrence_query, False),
+                ('rooms_different_sex', different_sex_query, False)]
